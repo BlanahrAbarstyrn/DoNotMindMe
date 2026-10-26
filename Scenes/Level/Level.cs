@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using DoNotMindMe.Globals;
 
 namespace DoNotMindMe.Scenes.Level;

@@ -1,6 +1,4 @@
 using Godot;
-using System;
-using System.Collections.Generic;
 using DoNotMindMe.Globals;
 
 namespace DoNotMindMe.Scenes.Main;

@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 namespace DoNotMindMe.Scenes.Boom;
 public partial class Boom : AnimatedSprite2D

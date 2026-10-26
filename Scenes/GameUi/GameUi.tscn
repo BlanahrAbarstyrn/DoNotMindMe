@@ -13,7 +13,7 @@ script = ExtResource("1_mb7aw")
 _debugLabel = NodePath("ColorRect/DebugLabel")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1215078403]
-custom_minimum_size = Vector2(220, 200)
+custom_minimum_size = Vector2(300, 200)
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0

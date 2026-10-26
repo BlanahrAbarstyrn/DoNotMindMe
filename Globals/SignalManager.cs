@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 namespace DoNotMindMe.Globals;
 public partial class SignalManager : Node

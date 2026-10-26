@@ -1,0 +1,39 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+.nomedia
+
+# Godot-specific ignores
+export.cfg
+export_presets.cfg
+
+# Ignore the .import folder (compiled assets)
+.import/
+
+# Do NOT ignore individual *.import files (import settings)
+!*.import
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores (if using C#)
+.mono/
+data_*/
+mono_crash.*.json
+
+# .NET / MSBuild compilation artifacts (CRITICAL FOR C#)
+bin/
+obj/
+
+# Temporary and system files
+*.tmp
+*.log
+*.DS_Store
+Thumbs.db
+
+# Jetbrains IDEs
+.idea/
+.fleet/
+
+# Build Exports
+Exports/

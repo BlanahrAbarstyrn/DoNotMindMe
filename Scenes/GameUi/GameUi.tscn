@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://dtx5mlggfj2li"]
+
+[ext_resource type="Script" uid="uid://dwkitclsosw4s" path="res://Scenes/GameUi/GameUi.cs" id="1_mb7aw"]
+
+[node name="GameUi" type="Control" unique_id=195052631 node_paths=PackedStringArray("_debugLabel")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mb7aw")
+_debugLabel = NodePath("ColorRect/DebugLabel")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1215078403]
+custom_minimum_size = Vector2(220, 200)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.050980393, 0.09411765, 0.20392157, 0.6156863)
+
+[node name="DebugLabel" type="Label" parent="ColorRect" unique_id=544104464]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -72.5
+offset_top = -63.5
+offset_right = 72.5
+offset_bottom = 63.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "debug output here
+debug output here
+debug output here
+debug output here
+debug output here"

@@ -17,7 +17,7 @@ public partial class Player : CharacterBody2D
 		Vector2 newVelocity = Vector2.Zero;
 		newVelocity.X = Input.GetActionStrength("right") - Input.GetActionStrength("left");
 		newVelocity.Y = Input.GetActionStrength("down") - Input.GetActionStrength("up");
-		Velocity = newVelocity.Normalized() * 120.0f;
+		Velocity = newVelocity.Normalized() * 150.0f;
 		Rotation = Velocity.Angle();
 		MoveAndSlide();
 	}

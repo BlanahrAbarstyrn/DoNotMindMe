@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+using System.Diagnostics;
 using DoNotMindMe.Globals;
 using DoNotMindMe.Scenes.player;
 
@@ -49,6 +50,7 @@ public partial class Npc : CharacterBody2D
 			_navigationAgent.TargetPosition = GetGlobalMousePosition();
 		}
 		RayCastToPlayer();
+		UpdateState();
 		UpdateMovement();
 		UpdateNavigation();
 		UpdateDebugLabel();
@@ -62,6 +64,7 @@ public partial class Npc : CharacterBody2D
 		text += $"IsNavigationFinished: {_navigationAgent.IsNavigationFinished()}\n";
 		text += $"Target: {_navigationAgent.TargetPosition}\n";
 		text += $"FOV: {GetFieldOfViewAngle():F2} InFOV {PlayerInFieldOfView()}\n";
+		text += $"SeePlayer: {CanSeePlayer()} State: {_state}\n";
 		SignalManager.EmitOnDebugLabel(text);
 	}
 
@@ -86,6 +89,17 @@ public partial class Npc : CharacterBody2D
 	{
 		_playerDetect.LookAt(_playerRef.GlobalPosition);
 	}
+
+	private bool PlayerDetected()
+	{
+		var c = _rayCast.GetCollider();
+		return c != null && (c is Player);
+	}
+
+	private bool CanSeePlayer()
+	{
+		return PlayerDetected() && PlayerInFieldOfView();
+	}
 	
 	private void UpdateNavigation()
 	{
@@ -93,7 +107,7 @@ public partial class Npc : CharacterBody2D
 		{
 			var nextPathPosition = _navigationAgent.GetNextPathPosition();
 			LookAt(nextPathPosition);
-			Velocity = Position.DirectionTo(nextPathPosition) * 100.0f;
+			Velocity = Position.DirectionTo(nextPathPosition) * 80.0f;
 			MoveAndSlide();
 		}
 	}
@@ -112,6 +126,12 @@ public partial class Npc : CharacterBody2D
 			case EnemyState.Patrolling:
 				ProcessPatrolling();
 				break;
+			case EnemyState.Chasing:
+				ProcessChasing();
+				break;
+			case EnemyState.Searching:
+				ProcessSearching();
+				break;
 		}
 	}
 
@@ -121,5 +141,45 @@ public partial class Npc : CharacterBody2D
 		{
 			SetNextWaypoint();
 		}
+	}
+
+	private void ProcessChasing()
+	{
+		_navigationAgent.TargetPosition = _playerRef.GlobalPosition;
+	}
+
+	private void ProcessSearching()
+	{
+		if (_navigationAgent.IsNavigationFinished())
+		{
+			SetState(EnemyState.Patrolling);
+		}
+	}
+	
+	private void SetState(EnemyState newState)
+	{
+		if (_state == newState) return;
+
+		if (newState == EnemyState.Patrolling)
+		{
+			SetNextWaypoint();
+		}
+		_state = newState;
+	}
+	
+	private void UpdateState()
+	{
+		var newState = _state;
+		var canSee = CanSeePlayer();
+
+		if (canSee)
+		{
+			newState = EnemyState.Chasing;
+		}
+		else if (!canSee && _state == EnemyState.Chasing)
+		{
+			newState = EnemyState.Searching;
+		}
+		SetState(newState);
 	}
 }

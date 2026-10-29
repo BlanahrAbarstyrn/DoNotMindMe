@@ -1,7 +1,7 @@
 using Godot;
 using System.Collections.Generic;
-using System.Diagnostics;
 using DoNotMindMe.Globals;
+using DoNotMindMe.Scenes.bullet;
 using DoNotMindMe.Scenes.player;
 
 namespace DoNotMindMe.Scenes.NPC;
@@ -13,7 +13,12 @@ public partial class Npc : CharacterBody2D
 	[Export] private Node2D _patrolPoints;
 	[Export] private Node2D _playerDetect;
 	[Export] private RayCast2D _rayCast;
-
+	[Export] private Sprite2D _warningTriangle;
+	[Export] private AnimationPlayer _animationPlayer;
+	[Export] private AudioStreamPlayer2D _sound;
+	[Export] private PackedScene _bulletScene;
+	[Export] private Timer _shootTimer;
+	
 	private List<Vector2> _waypoints = new();
 	private int _currentWayPoint = 0;
 	private EnemyState _state = EnemyState.Patrolling;
@@ -26,6 +31,7 @@ public partial class Npc : CharacterBody2D
 		SetPhysicsProcess(false);
 		CreateWaypoints();
 		CallDeferred(MethodName.LateSetup);
+		_shootTimer.Timeout += OnShootTimerTimeout;
 	}
 
 	private async void LateSetup()
@@ -162,7 +168,19 @@ public partial class Npc : CharacterBody2D
 
 		if (newState == EnemyState.Patrolling)
 		{
+			_warningTriangle.Hide();
 			SetNextWaypoint();
+		}
+		else if (newState == EnemyState.Searching)
+		{
+			_warningTriangle.Show();
+			_animationPlayer.Play("RESET");
+		}
+		else if (newState == EnemyState.Chasing)
+		{
+			_warningTriangle.Hide();
+			SoundManager.PlayGasp(_sound);
+			_animationPlayer.Play("flash");
 		}
 		_state = newState;
 	}
@@ -181,5 +199,21 @@ public partial class Npc : CharacterBody2D
 			newState = EnemyState.Searching;
 		}
 		SetState(newState);
+	}
+
+	private void Shoot()
+	{
+		Bullet bullet = _bulletScene.Instantiate<Bullet>();
+		bullet.GlobalPosition = GlobalPosition;
+		GetTree().Root.AddChild(bullet);
+		SoundManager.PlayLaser(_sound);
+	}
+	
+	private void OnShootTimerTimeout()
+	{
+		if (_state != EnemyState.Chasing) return;
+		{
+			Shoot();
+		}
 	}
 }

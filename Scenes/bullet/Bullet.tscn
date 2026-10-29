@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://c03iftmx1by1k"]
+
+[ext_resource type="Texture2D" uid="uid://dnjbusemmq0gn" path="res://assets/images/bulletRed_outline.png" id="1_7u3a6"]
+[ext_resource type="Script" uid="uid://bxiofcgmf3ukh" path="res://Scenes/bullet/Bullet.cs" id="1_jy0d1"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mnkkl"]
+radius = 7.0
+height = 24.0
+
+[node name="Bullet" type="Area2D" unique_id=462182377 node_paths=PackedStringArray("_timer")]
+collision_layer = 0
+collision_mask = 5
+script = ExtResource("1_jy0d1")
+_timer = NodePath("Timer")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=614778297]
+rotation = 1.5707964
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("1_7u3a6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1711124571]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_mnkkl")
+
+[node name="Timer" type="Timer" parent="." unique_id=1969807887]
+wait_time = 5.0
+one_shot = true
+autostart = true

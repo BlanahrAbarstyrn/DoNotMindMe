@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bll0k0gshfrry"]
+
+[ext_resource type="Texture2D" uid="uid://7fgp0ei67kfo" path="res://assets/images/exit.png" id="1_1wqnk"]
+[ext_resource type="Script" uid="uid://ctv5y7jsdvsr0" path="res://Scenes/exit/Exit.cs" id="1_t68hc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t68hc"]
+size = Vector2(65, 56)
+
+[node name="Exit" type="Area2D" unique_id=876178256]
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+script = ExtResource("1_t68hc")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=611133377]
+modulate = Color(0.33333334, 1, 0.12156863, 1)
+texture = ExtResource("1_1wqnk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2102638097]
+position = Vector2(6.5, 4)
+shape = SubResource("RectangleShape2D_t68hc")

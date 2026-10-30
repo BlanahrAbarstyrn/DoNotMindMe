@@ -1,0 +1,118 @@
+[gd_scene format=3 uid="uid://pr251ejodvlg"]
+
+[ext_resource type="Texture2D" uid="uid://dg6vwj8ocvhx7" path="res://assets/images/pill2.png" id="1_jv1ks"]
+[ext_resource type="Script" uid="uid://bp5wxr33pfqx5" path="res://Scenes/pick_up/PickUp.cs" id="1_sx77j"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jv1ks"]
+height = 48.083263
+
+[sub_resource type="Animation" id="Animation_5ay3l"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_jv1ks"]
+resource_name = "flash"
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5021487, 0.99852556),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.10980392, 0.10980392, 1, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_sx77j"]
+resource_name = "vanish"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(2, 2), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sx77j"]
+_data = {
+&"RESET": SubResource("Animation_5ay3l"),
+&"flash": SubResource("Animation_jv1ks"),
+&"vanish": SubResource("Animation_sx77j")
+}
+
+[node name="PickUp" type="Area2D" unique_id=58186121 node_paths=PackedStringArray("_sound", "_animationPlayer")]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("1_sx77j")
+_sound = NodePath("Sound")
+_animationPlayer = NodePath("AnimationPlayer")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1720850330]
+texture = ExtResource("1_jv1ks")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=156552038]
+rotation = 0.7853982
+shape = SubResource("CapsuleShape2D_jv1ks")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=920741876]
+libraries/ = SubResource("AnimationLibrary_sx77j")
+autoplay = &"flash"
+
+[node name="Sound" type="AudioStreamPlayer2D" parent="." unique_id=17149236]

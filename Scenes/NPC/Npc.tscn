@@ -72,6 +72,8 @@ offset = Vector2(10, 0)
 shape = SubResource("CapsuleShape2D_nvvju")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1931622990]
+avoidance_enabled = true
+radius = 20.0
 debug_enabled = true
 debug_path_custom_color = Color(1, 0.17254902, 0.30588236, 1)
 

@@ -8,6 +8,20 @@ namespace DoNotMindMe.Scenes.NPC;
 public partial class Npc : CharacterBody2D
 {
 	private enum EnemyState { Patrolling, Chasing, Searching }
+
+	private static readonly Dictionary<EnemyState, float> Speeds = new()
+	{
+		{ EnemyState.Patrolling, 60.0f },
+		{ EnemyState.Chasing, 100.0f },
+		{ EnemyState.Searching, 80.0f }
+	};
+
+	private static readonly Dictionary<EnemyState, float> FovAngles = new()
+	{
+		{ EnemyState.Patrolling, 60.0f },
+		{ EnemyState.Chasing, 120.0f },
+		{ EnemyState.Searching, 90.0f }
+	};
 	
 	[Export] private NavigationAgent2D _navigationAgent;
 	[Export] private Node2D _patrolPoints;
@@ -28,6 +42,7 @@ public partial class Npc : CharacterBody2D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		_navigationAgent.VelocityComputed += OnVelocityComputed;
 		_playerRef = GetTree().GetFirstNodeInGroup(Player.GroupName) as Player;
 		SetPhysicsProcess(false);
 		CreateWaypoints();
@@ -90,7 +105,7 @@ public partial class Npc : CharacterBody2D
 
 	private bool PlayerInFieldOfView()
 	{
-		return GetFieldOfViewAngle() < 60.0f;
+		return GetFieldOfViewAngle() < FovAngles[_state];
 	}
 	
 	private void RayCastToPlayer()
@@ -115,8 +130,9 @@ public partial class Npc : CharacterBody2D
 		{
 			var nextPathPosition = _navigationAgent.GetNextPathPosition();
 			LookAt(nextPathPosition);
-			Velocity = Position.DirectionTo(nextPathPosition) * 80.0f;
-			MoveAndSlide();
+			//Velocity = Position.DirectionTo(nextPathPosition) * Speeds[_state];
+			//MoveAndSlide();
+			_navigationAgent.Velocity = Position.DirectionTo(nextPathPosition) * Speeds[_state];
 		}
 	}
 	
@@ -181,7 +197,10 @@ public partial class Npc : CharacterBody2D
 		else if (newState == EnemyState.Chasing)
 		{
 			_warningTriangle.Hide();
-			SoundManager.PlayGasp(_sound);
+			if (!_sound.Playing)
+			{
+				SoundManager.PlayGasp(_sound);
+			}
 			_animationPlayer.Play("flash");
 		}
 		_state = newState;
@@ -222,5 +241,11 @@ public partial class Npc : CharacterBody2D
 	private void OnHitBoxBodyEntered(Node2D body)
 	{
 		SignalManager.EmitOnGameOver();
+	}
+
+	private void OnVelocityComputed(Vector2 velocity)
+	{
+		Velocity = velocity;
+		MoveAndSlide();
 	}
 }

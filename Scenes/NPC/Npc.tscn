@@ -47,7 +47,11 @@ _data = {
 &"flash": SubResource("Animation_1pdq0")
 }
 
-[node name="NPC" type="CharacterBody2D" unique_id=69998472 node_paths=PackedStringArray("_navigationAgent", "_playerDetect", "_rayCast", "_warningTriangle", "_animationPlayer", "_sound", "_shootTimer")]
+[sub_resource type="CircleShape2D" id="CircleShape2D_kpr8n"]
+radius = 25.317978
+
+[node name="NPC" type="CharacterBody2D" unique_id=69998472 node_paths=PackedStringArray("_navigationAgent", "_playerDetect", "_rayCast", "_warningTriangle", "_animationPlayer", "_sound", "_shootTimer", "_hitBox")]
+position = Vector2(-1, 0)
 collision_layer = 0
 script = ExtResource("1_nvvju")
 _navigationAgent = NodePath("NavigationAgent2D")
@@ -58,6 +62,7 @@ _animationPlayer = NodePath("AnimationPlayer")
 _sound = NodePath("Sound")
 _bulletScene = ExtResource("2_kpr8n")
 _shootTimer = NodePath("ShootTimer")
+_hitBox = NodePath("HitBox")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=742715400]
 texture = ExtResource("1_o5qkj")
@@ -89,3 +94,11 @@ libraries/ = SubResource("AnimationLibrary_76es5")
 [node name="ShootTimer" type="Timer" parent="." unique_id=175593329]
 wait_time = 1.5
 autostart = true
+
+[node name="HitBox" type="Area2D" parent="." unique_id=165186259]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=1448577079]
+position = Vector2(9, 0)
+shape = SubResource("CircleShape2D_kpr8n")

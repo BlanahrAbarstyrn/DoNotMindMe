@@ -12,6 +12,11 @@ public partial class Exit : Area2D
 		SignalManager.Instance.OnShowExit += OnShowExit;
 		BodyEntered += OnBodyEntered;
 	}
+
+	public override void _ExitTree()
+	{
+		SignalManager.Instance.OnShowExit -= OnShowExit;
+	}
 	
 	private void OnShowExit()
 	{

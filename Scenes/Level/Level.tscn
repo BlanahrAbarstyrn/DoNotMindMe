@@ -15,8 +15,10 @@ polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Arr
 outlines = Array[PackedVector2Array]([PackedVector2Array(74, 73, 76, 563, 1075, 564, 1080, 73)])
 agent_radius = 25.0
 
-[node name="Level" type="Node2D" unique_id=965852955]
+[node name="Level" type="Node2D" unique_id=965852955 node_paths=PackedStringArray("_pickUps", "_gameUi")]
 script = ExtResource("1_hs7gv")
+_pickUps = NodePath("PickUps")
+_gameUi = NodePath("CanvasLayer/GameUi")
 
 [node name="Tiles" type="Node2D" parent="." unique_id=300053103]
 
@@ -67,8 +69,19 @@ polygon = PackedVector2Array(500, 306, 499, 455, 847, 456, 842, 302)
 [node name="Player" parent="." unique_id=1911036928 instance=ExtResource("6_ksici")]
 position = Vector2(758, 490)
 
-[node name="PickUp" parent="." unique_id=58186121 instance=ExtResource("7_8gphe")]
-position = Vector2(1010, 170)
-
 [node name="Exit" parent="." unique_id=876178256 instance=ExtResource("8_t3e81")]
 position = Vector2(1059, 301)
+
+[node name="PickUps" type="Node" parent="." unique_id=237064415]
+
+[node name="PickUp" parent="PickUps" unique_id=58186121 instance=ExtResource("7_8gphe")]
+position = Vector2(1010, 170)
+
+[node name="PickUp2" parent="PickUps" unique_id=1284996530 instance=ExtResource("7_8gphe")]
+position = Vector2(134, 134)
+
+[node name="PickUp3" parent="PickUps" unique_id=536517843 instance=ExtResource("7_8gphe")]
+position = Vector2(466, 472)
+
+[node name="PickUp4" parent="PickUps" unique_id=1618001655 instance=ExtResource("7_8gphe")]
+position = Vector2(198, 340)

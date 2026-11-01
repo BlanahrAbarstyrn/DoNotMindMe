@@ -18,6 +18,7 @@ public partial class Npc : CharacterBody2D
 	[Export] private AudioStreamPlayer2D _sound;
 	[Export] private PackedScene _bulletScene;
 	[Export] private Timer _shootTimer;
+	[Export] private Area2D _hitBox;
 	
 	private List<Vector2> _waypoints = new();
 	private int _currentWayPoint = 0;
@@ -32,6 +33,7 @@ public partial class Npc : CharacterBody2D
 		CreateWaypoints();
 		CallDeferred(MethodName.LateSetup);
 		_shootTimer.Timeout += OnShootTimerTimeout;
+		_hitBox.BodyEntered += OnHitBoxBodyEntered;
 	}
 
 	private async void LateSetup()
@@ -215,5 +217,10 @@ public partial class Npc : CharacterBody2D
 		{
 			Shoot();
 		}
+	}
+
+	private void OnHitBoxBodyEntered(Node2D body)
+	{
+		SignalManager.EmitOnGameOver();
 	}
 }
